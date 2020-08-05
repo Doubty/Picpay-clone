@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {AntDesign, Ionicons} from '@expo/vector-icons';
-
+import PayButton from './componentes/PayButton';
 import HomePage from './pages/Home';
 import PayPage from './pages/Pay';
 import WalletPage from './pages/Wallet';
@@ -18,11 +18,6 @@ const icons = {
     Wallet: {
         lib: AntDesign, 
         name: 'creditcard'
-    }, 
-
-    Pay: {
-        lib: AntDesign, 
-        name: 'home'
     }
 
 }
@@ -34,10 +29,16 @@ export default function Nativation(){
        
         <Tab.Navigator 
         
-        screenOptions={({ route}) => ({ 
+        screenOptions={({ route, navigation}) => ({ 
               
-            tabBarIcon: ({ color, size}) => {
-
+            tabBarIcon: ({ color, size, focused}) => {
+               
+                if(route.name === "Pay"){
+                    return <PayButton  
+                     onPress={() => navigation.navigate('Pay')}
+                     focused={focused}
+                    />
+                }
                const {lib: Icon, name} = icons[route.name];
                return <Icon name={name} size={size} color={color} />; 
             },
@@ -55,8 +56,9 @@ export default function Nativation(){
         >
 
          <Tab.Screen  name="Home" component={HomePage} options={{ title: "Inicio"}} />
+         <Tab.Screen  name="Pay" component={PayPage}  options={{ title: ""}} />
          <Tab.Screen  name="Wallet" component={WalletPage} options={{ title: "Carteira"}} />
-         <Tab.Screen  name="Pay" component={PayPage}  options={{ title: "Pagar"}} />
+         
       
 
 
